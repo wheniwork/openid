@@ -51,7 +51,7 @@ class OpenID extends AbstractStrategy {
 	);
 
 	protected $responseMap = array(
-		'name' => 'namePerson/first',
+		'name' => 'namePerson',
 		'info.first_name' => 'namePerson/first',
 		'info.last_name' => 'namePerson/last',
 		'info.email' => 'contact/email',
@@ -73,9 +73,11 @@ class OpenID extends AbstractStrategy {
 		if (empty($this->strategy['openid_url']) && empty($_POST['openid_url'])) {
 			$this->render($this->strategy['identifier_form']);
 		}
-		if ($_POST['openid_url']) {
+
+		if (isset($_POST['openid_url'])) {
 			$this->strategy['openid_url'] = $_POST['openid_url'];
 		}
+
 		$this->openid->identity = $this->strategy['openid_url'];
 
 		try{
@@ -89,7 +91,7 @@ class OpenID extends AbstractStrategy {
 			return $this->response($this->openid->data, $error);
 		}
 
-		$this->http->redirect($url);
+		$this->redirect($url);
 	}
 
 	/**
